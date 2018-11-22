@@ -13,8 +13,7 @@ public class movement : MonoBehaviour {
    // public float horizontal =0f;
     public float speed = 0f;
     public float jump;
-    bool jumping;
-    bool grounded = true;
+    bool grounded = false;
 
     private void Start()
     {
@@ -28,13 +27,14 @@ public class movement : MonoBehaviour {
 
         MakeMovement(horizontal);
 
-        if (grounded && !jumping&& Input.GetKeyDown(KeyCode.Space) )
+        if (grounded == true && rigid.velocity.y <= 0 && Input.GetKeyDown(KeyCode.Space))
         {
+            grounded = false;
 
-            jumping = true;
+            GetComponent<Rigidbody2D>().velocity = new Vector2
+                        (GetComponent<Rigidbody2D>().velocity.x, jump * 1.2f);
 
         }
-       
 
     }
 
@@ -54,17 +54,4 @@ public class movement : MonoBehaviour {
         grounded = false;
     }
 
-
-    private void FixedUpdate()
-    {
-
-        if (jumping)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2
-                        (GetComponent<Rigidbody2D>().velocity.x, jump*1.2f);
-        }
-
-        jumping = false;
-
-    }
 }

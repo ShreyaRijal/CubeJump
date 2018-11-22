@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class levelComp : MonoBehaviour {
 
-    [SerializeField] private string loadLevel;
+    public string loadLevel;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

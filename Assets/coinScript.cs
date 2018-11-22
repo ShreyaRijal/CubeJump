@@ -8,7 +8,6 @@ public class coinScript : MonoBehaviour {
     public Text coinScoreText;
     public static int coinScore = 0;
     public Transform cube;
-    death d;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -30,12 +29,5 @@ public class coinScript : MonoBehaviour {
         {
             coinScore = 0;
         }
-    }
-
-    public int getScore(int coinScore)
-    {
-        coinScript.coinScore = coinScore;
-
-        return coinScore;
     }
 }
