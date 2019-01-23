@@ -10,7 +10,6 @@ public class movement : MonoBehaviour {
     private PlatformerCharacter2D controls;
     private Rigidbody2D rigid;
     private Vector2 vec;
-   // public float horizontal =0f;
     public float speed = 0f;
     public float jump;
     bool grounded = false;

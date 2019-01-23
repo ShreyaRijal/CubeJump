@@ -45,7 +45,7 @@ public class moveSideToSide : MonoBehaviour {
         cube.position+= speed * Time.deltaTime;
     }
 
-    private void OnCollisionExit2D(Collision collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         collision.collider.transform.SetParent(null);
     }
