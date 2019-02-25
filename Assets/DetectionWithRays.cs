@@ -1,5 +1,9 @@
 ﻿using Assets;
 using UnityEngine;
+using System.Collections.Generic;
+using System;
+using System.Xml;
+using System.Text;
 
 public class DetectionWithRays : MonoBehaviour
 {
@@ -13,6 +17,9 @@ public class DetectionWithRays : MonoBehaviour
     Vector2 northWest = new Vector2(-1f, 1f);
     Vector2 southEast = new Vector2(1f, -1f);
     Vector2 southWest = new Vector2(-1f, -1f);
+    static List<Agent> agents = new List<Agent>();
+    Population pop;
+    float fitness = 0f;
 
     float distance = 2f;
 
@@ -27,18 +34,20 @@ public class DetectionWithRays : MonoBehaviour
     int seventh = 0;
     int eighth = 0;
 
-    InitialConnectionData con = new InitialConnectionData();
-    InitialConnectionData con2 = new InitialConnectionData();
-    InitialConnectionData con3 = new InitialConnectionData();
-    InitialConnectionData con4 = new InitialConnectionData();
-    InitialConnectionData con5 = new InitialConnectionData();
-    InitialConnectionData con6 = new InitialConnectionData();
-    InitialConnectionData con7 = new InitialConnectionData();
-    InitialConnectionData con8 = new InitialConnectionData();
-    InitialConnectionData con9 = new InitialConnectionData();
-    InitialConnectionData con10 = new InitialConnectionData();
+    private static InitialConnectionData con = new InitialConnectionData();
+    private static InitialConnectionData con2 = new InitialConnectionData();
+    private static InitialConnectionData con3 = new InitialConnectionData();
+    private static InitialConnectionData con4 = new InitialConnectionData();
+    private static InitialConnectionData con5 = new InitialConnectionData();
+    private static InitialConnectionData con6 = new InitialConnectionData();
+    private static InitialConnectionData con7 = new InitialConnectionData();
+    private static InitialConnectionData con8 = new InitialConnectionData();
+    private static InitialConnectionData con9 = new InitialConnectionData();
+    private static InitialConnectionData con10 = new InitialConnectionData();
 
     int[] input = new int[8];
+
+    InitialNeuralNetwork network;
 
     InitialNeuralNetwork firstNetwork;
     InitialNeuralNetwork secondNetwork;
@@ -57,7 +66,27 @@ public class DetectionWithRays : MonoBehaviour
     {
         if (counter < 11)
         {
-            counter =counter+1;
+            counter = counter + 1;
+        }
+        else
+        {
+            Application.Quit();
+        }
+
+        if (counter == 1)
+        {
+            con.SetBias(); con.InputToOutput(); 
+            con2.SetBias(); con2.InputToOutput();
+            con3.SetBias(); con3.InputToOutput();
+            con4.SetBias(); con4.InputToOutput();
+            con5.SetBias(); con5.InputToOutput();
+            con6.SetBias(); con6.InputToOutput();
+            con7.SetBias(); con7.InputToOutput();
+            con8.SetBias(); con8.InputToOutput();
+            con9.SetBias(); con9.InputToOutput();
+            con10.SetBias(); con10.InputToOutput();
+
+
         }
     }
 
@@ -179,57 +208,70 @@ public class DetectionWithRays : MonoBehaviour
             switch (counter)
             {
                 case 1:
-                    RunNN(firstNetwork);
+                    network = firstNetwork;
+                    RunNN(network);
                     break;
                 case 2:
-                    RunNN(secondNetwork);
+                    network = secondNetwork;
+                    RunNN(network);
                     break;
                 case 3:
-                    RunNN(thirdNetwork);
+                    network = thirdNetwork;
+                    RunNN(network);
                     break;
                 case 4:
-                    RunNN(fourthNetwork);
+                    network = fourthNetwork;
+                    RunNN(network);
                     break;
                 case 5:
-                    RunNN(fifthNetwork);
+                    network = fifthNetwork;
+                    RunNN(network);
                     break;
                 case 6:
-                    RunNN(sixthNetwork);
+                    network = sixthNetwork;
+                    RunNN(network);
                     break;
                 case 7:
-                    RunNN(seventhNetwork);
+                    network = seventhNetwork;
+                    RunNN(network);
                     break;
                 case 8:
-                    RunNN(eighthNetwork);
+                    network = eighthNetwork;
+                    RunNN(network);
                     break;
                 case 9:
-                    RunNN(ninthNetwork);
+                    network = ninthNetwork;
+                    RunNN(network);
                     break;
                 case 10:
-                    RunNN(tenthNetwork);
+                    network = tenthNetwork;
+                    RunNN(network);
                     break;
             }
         }
+
     }
 
     private void RunNN(InitialNeuralNetwork net)
     {
-        if (net.outNodes[0] > 30)
+        if (net.outNodes[0] >= 4)
         {
             cube.Translate(Vector2.right * 4f * Time.deltaTime);
         }
 
-        if (net.outNodes[1] > 30)
-        {
+        if (net.outNodes[1] >= 5)
+        {;
             cube.Translate(Vector2.left * 2f * Time.deltaTime);
         }
 
-        if (grounded == true && net.outNodes[2] > 30)
+        if (grounded == true && net.outNodes[2] >= 2)
         {
             grounded = false;
             GetComponent<Rigidbody2D>().velocity = new Vector2
                     (GetComponent<Rigidbody2D>().velocity.x, 12.5f);
         }
+
+        fitness = cube.position.x;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -240,5 +282,21 @@ public class DetectionWithRays : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         grounded = false;
+    }
+    private void OnDestroy()
+    {
+        //Debug.Log("Game ended.");
+        if (network != null)
+        {
+            Agent a = new Agent(network.connections, fitness);
+            agents.Add(a);
+
+        }
+
+        if (counter == 10)
+        {
+            //Debug.Log("Will dump all fitnesses");
+            pop = new Population(agents);
+        }
     }
 }

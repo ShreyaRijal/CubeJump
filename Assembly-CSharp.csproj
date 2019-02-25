@@ -69,6 +69,7 @@
     <Compile Include="Assets\2D Platformer Controller\Scripts\RaycastController.cs" />
     <Compile Include="Assets\Agent.cs" />
     <Compile Include="Assets\bgLoop.cs" />
+    <Compile Include="Assets\Check.cs" />
     <Compile Include="Assets\coinScript.cs" />
     <Compile Include="Assets\Connection.cs" />
     <Compile Include="Assets\death.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\movement.cs" />
     <Compile Include="Assets\moveSideToSide.cs" />
     <Compile Include="Assets\moveUpAndDown.cs" />
+    <Compile Include="Assets\Population.cs" />
     <Compile Include="Assets\score.cs" />
     <Compile Include="Assets\SimpleNeuralNetwork.cs" />
     <Compile Include="Assets\Species.cs" />

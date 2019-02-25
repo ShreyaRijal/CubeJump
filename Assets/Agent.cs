@@ -7,14 +7,20 @@ namespace Assets
 {
     class Agent
     {
-        int fitness;
+        public float fitness;
         List<int> inNodes;
         List<float> hiddenNodes;
         List<float> outNodes;
         List<Connection> connections;
 
+        public Agent(List<Connection> connections, float fitness)
+        {
+            this.connections = connections;
+            this.fitness = fitness;
+        }
+
         public Agent(List<int> inNodes, List<float> hiddenNodes, List<float> outNodes,
-                     List<Connection> connections, int fitness)
+                     List<Connection> connections, float fitness)
         {
             this.inNodes = inNodes;
             this.hiddenNodes = hiddenNodes;
@@ -24,7 +30,7 @@ namespace Assets
 
         }
 
-        public int GetFitness()
+        public float GetFitness()
         {
             return fitness;
         }
@@ -33,25 +39,25 @@ namespace Assets
         {
             return connections;
         }
-        public void AddConnection(int input, float output, int weight, bool expressed)
-        {
-            Connection c = new Connection(input, output, weight, true);
+        //public void AddConnection(int input, float output, int weight, bool expressed)
+        //{
+        //    Connection c = new Connection(input, output, weight, true);
 
-            connections.Add(c);
-        }
+        //    connections.Add(c);
+        //}
 
-        public void AddNode(int input, float output, Connection old)
-        {
-            old.DisableConnection();
-            int newNode =0;
-            hiddenNodes.Add(newNode);
+        //public void AddNode(int input, float output, Connection old)
+        //{
+        //    old.DisableConnection();
+        //    int newNode =0;
+        //    hiddenNodes.Add(newNode);
 
-            Connection inputToHidden = new Connection(input, newNode, 1, true);
-            connections.Add(inputToHidden);
-            Connection hiddenToOutput = new Connection(newNode, output, old.GetWeight(), true);
-            connections.Add(hiddenToOutput);
+        //    Connection inputToHidden = new Connection(input, newNode, 1, true);
+        //    connections.Add(inputToHidden);
+        //    Connection hiddenToOutput = new Connection(newNode, output, old.GetWeight(), true);
+        //    connections.Add(hiddenToOutput);
 
-        }
+        //}
 
         public Agent Crossover(Agent fitterParent, Agent parent)
         {
@@ -60,7 +66,7 @@ namespace Assets
             List<float> hiddens = new List<float>();
             List<float> outputs = new List<float>();
             List<Connection> cons = new List<Connection>();
-            int fitness= fitterParent.GetFitness();
+            float fitness= fitterParent.GetFitness();
 
             offspring = new Agent(inputs, hiddens, outputs, cons, fitness);
             foreach (Connection gene in fitterParent.GetConnections())

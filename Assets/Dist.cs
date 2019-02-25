@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class Dist : MonoBehaviour
 {
 
-    public Transform cube;
+    Transform cube;
     public Text distScore;
     private Rigidbody2D rigid;
     float horizontalVelocity = 0f;
+    float horizontalVelocity2 = 0f;
     bool grounded = false;
     float time=0;
 
@@ -18,6 +19,7 @@ public class Dist : MonoBehaviour
     private void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        cube = rigid.transform;
     }
     void Update()
     {
@@ -30,19 +32,26 @@ public class Dist : MonoBehaviour
         }
 
         horizontalVelocity = Vector2.Dot(rigid.velocity, Vector2.right);
+        horizontalVelocity2 = Vector2.Dot(rigid.velocity, Vector2.left);
 
         if (grounded == true)
         {
-            if (horizontalVelocity == 0)
-            {
-                time += Time.time;
 
-                if (time > 3000)
-                {
-                    time = 0;
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }
+            if (horizontalVelocity != 0 || horizontalVelocity2 != 0)
+            {
+                time = 0;
             }
+            if (horizontalVelocity == 0 && horizontalVelocity2==0)
+            {
+                time += 1;
+
+            }
+            if (time > 700)
+            {
+                time = 0;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
         }
     }
 
